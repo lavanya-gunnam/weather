@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>weather app</title>
+        <link rel="stylesheet" href="assets/style.css">
+        <!-- <script src="./assets/script.js"></script> -->
+    </head>
+    <body>
+        <div class="container">
+            <div class="title">
+                <p>weather  </p>
+            </div>
+            <div class="input  ">
+                <input type="text" id="location-input" placeholder="location">
+                <input type="button" value="Get" id="btn" >
+               
+            </div>
+            <div class="info ">
+                <img src="./assets/image/w3.png" id="icon">
+                <div class="temp"><span id="temp-value">22</span><span id="unit">&#176</span><span id="C">C</span></div>
+                <div id="weather-desc">cloudy</div>
+                <div id="location">Hyderabad</div>
+                <div id ="humidity">Humidity</div>
+                <div id ="wind">Speed</div>
+            </div>
+        </div>
+      
+    
+<script>
+
+
+let inputEle = document.getElementById("location-input");
+let temperature = document.getElementById("temp-value");
+let locEle = document.getElementById("location");
+let weatherdescEle = document.getElementById("weather-desc");
+let btnEle = document.getElementById("btn") ;
+let humidityEle=document.getElementById("humidity")
+let windEle=document.getElementById("wind")
+ const apikey = "d430cc2e84177895235da5e25887e7b6";
+
+ btnEle.onclick = function(){
+    if (inputEle.value === "")
+    alert("please Enter Valid Location");
+else{
+    loc = inputEle.value
+    url= `https://api.openweathermap.org/data/2.5/weather?q=${loc}&appid=${ apikey}`;
+    fetch(url).then(res=> res.json())
+    .then(data =>{
+        console.log(data);
+        const{name}= data;
+        const{feels_like}=data.main;
+        const{description}=data.weather[0];
+        const{humidity}=data.main;
+        const{speed} =data.wind;
+        temperature.innerText = Math.floor(feels_like-273);
+        locEle.innerText = name;
+        weatherdescEle.innerText= description;
+        humidityEle.innerText = `Humidity: ${humidity}%`;
+        windEle.innerText = `Wind Speed: ${speed} m/s`;
+        })
+    .catch(() =>{
+        alert("Enter Valid Location");
+    })
+    inputEle.value =""
+    
+    }
+}
+
+</script>
+</body>
+
+</html>
